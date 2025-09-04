@@ -11,9 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Tasky',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+  
       home: SplashScreen(),
     );
   }
