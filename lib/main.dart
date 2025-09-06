@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:tasky/feature/auth/ui/view/login_screen.dart';
 import 'package:tasky/feature/auth/ui/view/register_screen.dart';
@@ -9,23 +8,25 @@ void main() {
 }
 
 class TaskyApp extends StatelessWidget {
+  const TaskyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute:LoginScreen.routeName ,
-      routes:
-      {
-        LoginScreen.routeName:(context)=>const LoginScreen(),
-        RegisterScreen.routeName:(context)=>const RegisterScreen(),
+      initialRoute: LoginScreen.routeName,
+      routes: {
+        LoginScreen.routeName: (context) => LoginScreen(),
+        RegisterScreen.routeName: (context) => RegisterScreen(),
       },
-
-
     );
   }
 }
 
+
+
 //! 1- add package flutter_native_splash in pubspec.yaml part of dependencies
+
 // 2- design splash android and ios screens
 //    download splash images (icon) in assets folder say splash_ios_android_11.png
 // 3- design splash android 12 screen
