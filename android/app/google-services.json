@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "227174001275",
+    "project_id": "tasky-d75fa",
+    "storage_bucket": "tasky-d75fa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227174001275:android:18d864934c99cea8f210de",
+        "android_client_info": {
+          "package_name": "com.Menna.tasky"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpnJx6I4bXuQLqHB7get24c9q1HeqbAwg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227174001275:android:e0b3f4dcd85d57e1f210de",
+        "android_client_info": {
+          "package_name": "com.example.tasky"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpnJx6I4bXuQLqHB7get24c9q1HeqbAwg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

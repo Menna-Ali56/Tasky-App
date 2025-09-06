@@ -129,10 +129,11 @@ class RegisterScreen extends StatelessWidget {
                   title: "Already have an account?",
                   subTitle: "Login",
                   onTap: () {
-                    Navigator.of(context).pushNamed(LoginScreen.routeName);
+                    Navigator.of(context).pop();
                   },
                 )
-              : null,
+              : SizedBox.shrink(),
     );
+    
   }
 }
