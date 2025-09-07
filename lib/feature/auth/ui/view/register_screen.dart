@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/validator.dart';
@@ -106,7 +107,7 @@ class RegisterScreen extends StatelessWidget {
                     log("Home Screen");
 
                     if (formKey.currentState!.validate()) {
-                      // Perform login action
+                      register(email.text, password.text);
                     }
                   },
                 ),
@@ -134,6 +135,23 @@ class RegisterScreen extends StatelessWidget {
                 )
               : SizedBox.shrink(),
     );
-    
+  }
+
+  void register(String email, String password) async {
+    try {
+      UserCredential credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        log('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        log('The account already exists for that email.');
+      }
+    } catch (e) {
+      log(e.toString());
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/validator.dart';
 import 'package:tasky/core/widgets/material_button_widget.dart';
@@ -73,6 +74,7 @@ class LoginScreen extends StatelessWidget {
                     log("Home Screen");
 
                     if (formKey.currentState!.validate()) {
+                      login(email.text, password.text);
                       // Perform login action
                     }
                   },
@@ -99,7 +101,24 @@ class LoginScreen extends StatelessWidget {
                     Navigator.of(context).pushNamed(RegisterScreen.routeName);
                   },
                 )
-              : null,
+              : SizedBox.shrink(),
     );
+  }
+
+  void login(String email, String password) async {
+    try {
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      log(credential.user!.uid.toString());
+      log(credential.user!.email.toString());
+      log(credential.user!.emailVerified.toString());
+      log(credential.user!.displayName.toString());
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        log('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        log('Wrong password provided for that user.');
+      }
+    }
   }
 }

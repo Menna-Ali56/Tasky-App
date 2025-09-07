@@ -20,6 +20,8 @@ dependencies:
   flutter_native_splash: ^2.4.4
   firebase_core: ^4.1.0
   firebase_auth: ^6.0.2
+  animate_do: ^4.2.0
+  smooth_page_indicator: ^1.2.1
 
 dev_dependencies:
   flutter_test:
