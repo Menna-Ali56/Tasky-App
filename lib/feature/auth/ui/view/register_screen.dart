@@ -2,9 +2,11 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:tasky/core/utils/app_dialog.dart';
 import 'package:tasky/core/utils/validator.dart';
 import 'package:tasky/core/widgets/material_button_widget.dart';
 import 'package:tasky/core/widgets/text_form_field_helper.dart';
+import 'package:tasky/feature/auth/data/firebase/auth_firebase.dart';
 import 'package:tasky/feature/auth/ui/view/login_screen.dart';
 import 'package:tasky/feature/auth/ui/widget/state_member_widget.dart';
 
@@ -15,6 +17,8 @@ class RegisterScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
   var email = TextEditingController();
   var password = TextEditingController();
+  var userName = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,11 +107,20 @@ class RegisterScreen extends StatelessWidget {
                 SizedBox(height: 50),
                 MaterialButtonWidget(
                   title: "Register",
-                  onPressed: () {
-                    log("Home Screen");
-
+                  onPressed: () async {
                     if (formKey.currentState!.validate()) {
-                      register(email.text, password.text);
+                      AppDialog.showLoadingDialog(context);
+                      await register(email.text, password.text).then((_) async {
+                        await AuthFirebase.addUser(
+                            email: email.text,
+                            password: password.text,
+                            userName: userName.text);
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pushNamed(LoginScreen.routeName);
+                      }).catchError((error) {
+                        Navigator.of(context).pop();
+                        AppDialog.showErrorDialog(context, error.toString());
+                      });
                     }
                   },
                 ),
@@ -137,7 +150,7 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  void register(String email, String password) async {
+  Future<void> register(String email, String password) async {
     try {
       UserCredential credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(

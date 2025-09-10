@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tasky/core/utils/app_dialog.dart';
 import 'package:tasky/core/utils/validator.dart';
 import 'package:tasky/core/widgets/material_button_widget.dart';
 import 'package:tasky/core/widgets/text_form_field_helper.dart';
@@ -8,12 +9,21 @@ import 'package:tasky/feature/auth/ui/view/register_screen.dart';
 import 'package:tasky/feature/auth/ui/widget/state_member_widget.dart';
 import 'package:flutter/foundation.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
   static const String routeName = 'LoginScreen';
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   var formKey = GlobalKey<FormState>();
+
   var email = TextEditingController();
+
   var password = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,11 +81,19 @@ class LoginScreen extends StatelessWidget {
                 MaterialButtonWidget(
                   title: "Login",
                   onPressed: () {
-                    log("Home Screen");
-
                     if (formKey.currentState!.validate()) {
-                      login(email.text, password.text);
-                      // Perform login action
+                      AppDialog.showLoadingDialog(context);
+
+                      login(email.text, password.text).then((_) {
+                        Navigator.of(context).pop();
+                        Navigator.of(context)
+                            .popAndPushNamed(RegisterScreen.routeName);
+                        email.clear();
+                        password.clear();
+                      }).catchError((error) {
+                        Navigator.of(context).pop();
+                        AppDialog.showErrorDialog(context, error.toString());
+                      });
                     }
                   },
                 ),
@@ -105,20 +123,20 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  void login(String email, String password) async {
+  Future<void> login(String email, String password) async {
+    AppDialog.showLoadingDialog(context);
+
     try {
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      log(credential.user!.uid.toString());
-      log(credential.user!.email.toString());
-      log(credential.user!.emailVerified.toString());
-      log(credential.user!.displayName.toString());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         log('No user found for that email.');
       } else if (e.code == 'wrong-password') {
         log('Wrong password provided for that user.');
       }
+    } catch (e) {
+      log(e.toString());
     }
   }
 }
