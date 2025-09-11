@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:tasky/feature/home/ui/view/home_screen.dart';
 import 'package:tasky/feature/home/ui/view/onboarding.dart';
 import 'package:tasky/splash_screen.dart';
 import 'firebase_options.dart';
@@ -7,7 +8,7 @@ import 'package:tasky/feature/auth/ui/view/login_screen.dart';
 import 'package:tasky/feature/auth/ui/view/register_screen.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); 
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -21,12 +22,13 @@ class TaskyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: LoginScreen.routeName,
+      initialRoute: HomeScreen.routeName,
       routes: {
         LoginScreen.routeName: (context) => LoginScreen(),
         RegisterScreen.routeName: (context) => RegisterScreen(),
         SplashScreen.routeName: (context) => const SplashScreen(),
         OnboardingScreens.routeName: (context) => const OnboardingScreens(),
+        HomeScreen.routeName: (context) => HomeScreen()
       },
     );
   }
